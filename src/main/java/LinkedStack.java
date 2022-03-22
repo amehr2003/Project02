@@ -17,7 +17,7 @@ public class LinkedStack<T> implements StackInterface<T> {
 			topNode = newNode;
 			newNode.next = temp;
 		}
-		System.out.println(newEntry + " pushed to stack");
+		//System.out.println(newEntry + " pushed to stack");
 	}
 
 	public T pop() {
@@ -33,7 +33,7 @@ public class LinkedStack<T> implements StackInterface<T> {
 
 	public T peek() {
 		if (topNode == null) {
-			System.out.println("Stack is empty");
+			//System.out.println("Stack is empty");
 			throw new EmptyStackException();
 		} else {
 			return topNode.data;
@@ -49,7 +49,7 @@ public class LinkedStack<T> implements StackInterface<T> {
 
 	public void clear() {
 		if (topNode == null) {
-			System.out.println("Stack is empty");
+			//System.out.println("Stack is empty");
 			throw new EmptyStackException();
 		} else {
 			while (topNode.next != null) {
@@ -102,6 +102,7 @@ public class LinkedStack<T> implements StackInterface<T> {
 
 	
 	/* This function returns associated precedence to an operator */
+
 	static int Prec(char ch) {
 		switch (ch) {
 		case '+':
@@ -117,6 +118,8 @@ public class LinkedStack<T> implements StackInterface<T> {
 		}
 		return -1;
 	}
+
+
 
 	
 	public String convertToPostfix(String exp) {

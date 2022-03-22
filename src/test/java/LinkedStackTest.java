@@ -45,10 +45,10 @@ public class LinkedStackTest
     @Test
     void testConvertPostfix()
     {
-        //String exp = "a/b(c+(d-e))";
-        String exp1 = "mn+(p-q)+r";
+        String exp = "a/b(c+(d-e))";
+        //String exp1 = "mn+(p-q)+r";
         LinkedStack<Character> stck1 = new LinkedStack<Character>();
-        String actual= "a/(b−c)*d";
-        assertEquals(stck1.convertToPostfix(exp1), actual);
+        String actual= "abcde-+/";
+        assertEquals(stck1.convertToPostfix(exp), actual);
     }
 }
