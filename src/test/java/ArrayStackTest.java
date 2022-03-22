@@ -49,14 +49,13 @@ class ArrayStackTest {
     void evaluatePostfix() {
         //Arrange
         ResizeableArrayStack<Integer> arrayStackTest = new ResizeableArrayStack<>();
-        arrayStackTest = arrayStackTest.evaluatePostFix("26+35-/");
 
         //Act
-        //double testevaluatePostfix(arrayStackTest.peek());
+        arrayStackTest = arrayStackTest.evaluatePostfix("26+35-/");
+        int actual = -4;
 
         //Assert
-        assertEquals(arrayStackTest.peek(), -4);
+        assertEquals(arrayStackTest.peek(), actual);
     }
-
     
 }

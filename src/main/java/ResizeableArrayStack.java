@@ -116,9 +116,10 @@ public final class ResizeableArrayStack<T> implements StackInterface<T>
         }
 
         // Stack at End will contain result.
-        System.out.println(valueStack.pop());
+        //System.out.println(valueStack.pop());
         return valueStack;
     } //end evaluatePostfix
+
     private void checkCapacity(int capacity)
     {
         if (capacity > MAX_CAPACITY)
