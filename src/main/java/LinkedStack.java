@@ -1,12 +1,11 @@
-package edu.cpp.ds.stacks;
+//package edu.cpp.ds.stacks;
+
+import java.util.EmptyStackException;
 
 public class LinkedStack<T> implements StackInterface<T> {
 	private Node<T> topNode; // References the first node in the chain
 	private static final int MAX_CAPACITY = 1000;
 
-	public LinkedStack1() {
-		topNode = null;
-	} // end default constructor
 
 	public void push(T newEntry) {
 		Node<T> newNode = new Node<T>(newEntry);
@@ -65,7 +64,7 @@ public class LinkedStack<T> implements StackInterface<T> {
 	
 	static boolean checkBalance(String exp) {
 
-		StackInterface<Character> openDelimiterStack = new OurStack<Character>(10);
+		StackInterface<Character> openDelimiterStack = new LinkedStack<Character>();
 
 		int characterCount = exp.length();
 		boolean isBalanced = true;
