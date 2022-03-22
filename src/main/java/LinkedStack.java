@@ -1,15 +1,10 @@
-import java.util.EmptyStackException;
+package edu.cpp.ds.stacks;
 
-/**
- * A class of stacks whose entries are stored in a chain of nodes.
- * 
- * @author Frank M. Carrano and Timothy M. Henry
- * @version 5.0
- */
-public final class LinkedStack<T> implements StackInterface<T> {
+public class LinkedStack<T> implements StackInterface<T> {
 	private Node<T> topNode; // References the first node in the chain
+	private static final int MAX_CAPACITY = 1000;
 
-	public LinkedStack() {
+	public LinkedStack1() {
 		topNode = null;
 	} // end default constructor
 
@@ -63,68 +58,130 @@ public final class LinkedStack<T> implements StackInterface<T> {
 			}
 		}
 	}
+	
+	private static boolean isPaired(char open, char close) {
+		return (open == '(' && close == ')') || (open == '[' && close == ']') || (open == '{' && close == '}');
+	} // end isPaired
+	
+	static boolean checkBalance(String exp) {
 
-//  < Implementations of the stack operations go here. >
-  public LinkedStack<Integer> convertToPostfix(String exp)
+		StackInterface<Character> openDelimiterStack = new OurStack<Character>(10);
+
+		int characterCount = exp.length();
+		boolean isBalanced = true;
+		int index = 0;
+		char nextCharacter = ' ';
+
+		while (isBalanced && (index < characterCount)) {
+			nextCharacter = exp.charAt(index);
+			switch (nextCharacter) {
+			case '(':
+			case '[':
+			case '{':
+				openDelimiterStack.push(nextCharacter);
+				break;
+			case ')':
+			case ']':
+			case '}':
+				if (openDelimiterStack.isEmpty())
+					isBalanced = false;
+				else {
+					char openDelimiter = openDelimiterStack.pop();
+					isBalanced = isPaired(openDelimiter, nextCharacter);
+				} // end if
+				break;
+			default:
+				break; // Ignore unexpected characters
+			} // end switch
+			index++;
+		} // end while
+
+		if (!openDelimiterStack.isEmpty())
+			isBalanced = false;
+		return isBalanced;
+	} // end checkBalance
+
+	
+	/* This function returns associated precedence to an operator */
+	static int Prec(char ch) {
+		switch (ch) {
+		case '+':
+		case '-':
+			return 1;
+
+		case '*':
+		case '/':
+			return 2;
+
+		case '^':
+			return 3;
+		}
+		return -1;
+	}
+
+	
+	public String convertToPostfix(String exp) {
+		//Check the integrity of the input exp
+		
+		checkIntegrity(exp);
+		
+		String result = new String("");
+		LinkedStack<Character> myStack = new LinkedStack<Character>();
+		for (int i = 0; i < exp.length(); ++i) {
+			char c = exp.charAt(i);
+
+			// If the scanned character is an
+			// operand, add it to output.
+			if (Character.isLetterOrDigit(c))
+				result += c;
+
+			// If the scanned character is an '(',
+			// push it to the stack.
+			else if (c == '(')
+				myStack.push(c);
+
+			// If the scanned character is an ')',
+			// pop and output from the stack
+			// until an '(' is encountered.
+			else if (c == ')') {
+				while (!myStack.isEmpty() && myStack.peek() != '(')
+					result += myStack.pop();
+
+				myStack.pop();
+			} else // an operator is encountered
+			{
+				while (!myStack.isEmpty() && Prec(c) <= Prec(myStack.peek())) {
+
+					result += myStack.pop();
+				}
+				myStack.push(c);
+			}
+
+		}
+
+		// pop all the operators from the stack
+		while (!myStack.isEmpty()) {
+			if (myStack.peek() == '(')
+				return "Invalid Expression";
+			result += myStack.pop();
+		}
+		return result;
+	}
+   
+    private void checkIntegrity(String exp)
     {
-        LinkedStack<Integer> valueStack = new LinkedStack<Integer>();    // Create postfix stack
-        int n = exp.length();
-
-        for(int i=0;i<n;i++)
-        {
-            if(isOperator(exp.charAt(i)))
-            {
-                // pop top 2 operands.
-                int operatorOne =  valueStack.pop();
-                int operatorTwo = valueStack.pop();
-
-                // evaluate in reverse order i.e. op2 operator op1.
-                switch (exp.charAt(i)) {
-                    case '+' -> valueStack.push(operatorTwo + operatorOne);
-                    case '-' -> valueStack.push(operatorTwo - operatorOne);
-                    case '*' -> valueStack.push(operatorTwo * operatorOne);
-                    case '/' -> valueStack.push(operatorTwo / operatorOne);
-                }
-
-            }
-            // Current Char is Operand simple push into stack
-            else
-            {
-                // convert to integer
-                int result = exp.charAt(i) - '0';
-                valueStack.push(result);
-            }
-        }
-
-        // Stack at End will contain result.
-        System.out.println(valueStack.pop());
-        return valueStack;
-        //correction2
-        //return valueStack.pop();
-    } //end evaluatePostfix
-    private void checkCapacity(int capacity)
-    {
-        if (capacity > MAX_CAPACITY)
-            throw new IllegalStateException("Attempt to create a bag whose " +
-                    "capacity exceeds allowed " +
-                    "maximum of " + MAX_CAPACITY);
-    } // end checkCapacity
-    private void checkIntegrity()
-    {
-        if (!integrityOK)   //Method to check integrity and use for every other method. Means of sanitizing data.
-        {
-            throw new SecurityException("Uninitialized object used to call an arrayBag method");
-        }
+    	if(!checkBalance(exp))
+			throw new IllegalStateException("Expession is not balanced");
+		if(exp.length() > MAX_CAPACITY)
+			throw new IllegalStateException("Exceeded max Length");
+		if(exp.equals(null))
+			throw new IllegalStateException("Exp Cannot be null");
+		if(exp.trim().length() == 0)
+			throw new IllegalStateException("Exp Cannot be empty or blank");
+		
+        
     }  //end checkInitialization
-    private void ensureCapacity()
-    {
-        if (topIndex >= stack.length - 1) // If array is full, double its size
-        {
-            int newLength = 2 * stack.length;
-            checkCapacity(newLength);
-            stack = Arrays.copyOf(stack, newLength);
-        } // end if
-    }
+   
     public boolean isOperator(char ch) //this method will be used in evaluatePostfix to check and make sure what it being used in the stack is correct
     {
         if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
@@ -162,4 +219,11 @@ public final class LinkedStack<T> implements StackInterface<T> {
 			next = nextNode;
 		} // end setNextNode
 	} // end Node
-} // end LinkedStack
+
+	public static void main(String args[]) {
+		String exp = "a/b*(c+(d-e))";
+		//String exp1 = "m*n+(p-q)+r";
+		LinkedStack<Character> stck1 = new LinkedStack<Character>();
+		System.out.println(stck1.convertToPostfix(exp));
+	}
+}
