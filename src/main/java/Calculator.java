@@ -2,7 +2,7 @@ public class Calculator {
     public static void main(String[] args) {
 
         /**
-         * implementing resizeableArrayStack method
+         * implementing LinkedStack method
          * initializing variables according to instructions
          */
         String exp = "a/b(c+(d-e))";
@@ -12,12 +12,14 @@ public class Calculator {
 
 
         /**
-         * implementing LinkedStack method
+         * implementing resizeableArrayStack method
          * initializing variables according to “A Problem Solved: Evaluating Postfix Expressions”
          * according to the textbook
          */
-        String exp1 = ("2*3/(4-2)+5*6");
+        //String exp1 = ("2 * 3 / ( 4 - 2 ) + 5 * 6");
+        String exp1 = ("2 3 * 4 2 - / 5 6 * +");
         ResizeableArrayStack<Integer> arrayStackTest = new ResizeableArrayStack<>();
-        System.out.println(arrayStackTest.evaluatePostfix(exp1));
+        ResizeableArrayStack<Integer> hello = arrayStackTest.evaluatePostfix(exp1);
+        System.out.println(hello);
     }
 }
