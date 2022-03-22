@@ -18,3 +18,5 @@ https://youtu.be/s_3QpdLYJBk
 
 Repo Link: 
 https://github.com/amehr2003/Project02
+
+https://github.com/amehr2003/Project02/blob/master/index.html
